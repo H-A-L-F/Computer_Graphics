@@ -86,8 +86,8 @@ skyBox.name = "skybox"
 scene.add(skyBox)
 /* #endregion */
 
-var createBase = (x, y) => {
-    const geometry = new THREE.CylinderGeometry( 1, 1, 2, 32 );
+var createBase = (x, y, h) => {
+    const geometry = new THREE.CylinderGeometry( 1, 1, h, 32 );
     const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
     const cylinder = new THREE.Mesh( geometry, material );
     cylinder.position.x = x;
@@ -95,17 +95,37 @@ var createBase = (x, y) => {
     scene.add( cylinder );
 }
 
-var createBotHolder = (x, y) => {
-    const geometry = new THREE.ConeGeometry( 1, 2, 2 );
+var createBotHolder = (x, y, p) => {
+    const geometry = new THREE.ConeGeometry( 1, 2, 10);
     const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
     const cone = new THREE.Mesh( geometry, material );
     cone.position.x = x;
     cone.position.y = y;
+    cone.rotation.z = p;
     scene.add( cone );
 }
 
-createBase(10, 0);
-createBotHolder(10, 1);
+var createCore = (x, y) => {
+    const geometry = new THREE.IcosahedronGeometry(0.4, 0);
+    const material = new THREE.MeshLambertMaterial( {color: 0xffff00} );
+    const core = new THREE.Mesh(geometry, material);
+    core.position.x = x;
+    core.position.y = y;
+    scene.add(core);
+}
+
+var createLight = () => {
+    const light = new THREE.PointLight( 0xff0000, 1, 100 );
+    light.position.set( 10, 2.5 );
+    scene.add( light );
+}
+
+createBase(10, 0, 2);
+createBotHolder(10, 1, 0);
+createCore(10, 2.5);
+createBotHolder(10, 4, 3.1);
+createBase(10, 4.5, 1);
+createLight();
 
 camera.position.z = 5;
 
